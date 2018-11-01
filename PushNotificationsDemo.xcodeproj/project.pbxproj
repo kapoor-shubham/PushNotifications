@@ -12,6 +12,7 @@
 		5A7F46DE21899BCF0089274A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A7F46DC21899BCF0089274A /* Main.storyboard */; };
 		5A7F46E021899BEE0089274A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5A7F46DF21899BEE0089274A /* Assets.xcassets */; };
 		5A7F46E321899BEE0089274A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5A7F46E121899BEE0089274A /* LaunchScreen.storyboard */; };
+		5ADB3C75218AE0C800B54F95 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADB3C74218AE0C800B54F95 /* NotificationTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,8 @@
 		5A7F46DF21899BEE0089274A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5A7F46E221899BEE0089274A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5A7F46E421899BEE0089274A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5A7F46EA21899DB30089274A /* PushNotificationsDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PushNotificationsDemo.entitlements; sourceTree = "<group>"; };
+		5ADB3C74218AE0C800B54F95 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,8 +57,10 @@
 		5A7F46D721899BCF0089274A /* PushNotificationsDemo */ = {
 			isa = PBXGroup;
 			children = (
+				5A7F46EA21899DB30089274A /* PushNotificationsDemo.entitlements */,
 				5A7F46D821899BCF0089274A /* AppDelegate.swift */,
 				5A7F46DA21899BCF0089274A /* ViewController.swift */,
+				5ADB3C74218AE0C800B54F95 /* NotificationTableViewCell.swift */,
 				5A7F46DC21899BCF0089274A /* Main.storyboard */,
 				5A7F46DF21899BEE0089274A /* Assets.xcassets */,
 				5A7F46E121899BEE0089274A /* LaunchScreen.storyboard */,
@@ -96,6 +101,11 @@
 				TargetAttributes = {
 					5A7F46D421899BCF0089274A = {
 						CreatedOnToolsVersion = 9.3;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -135,6 +145,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5ADB3C75218AE0C800B54F95 /* NotificationTableViewCell.swift in Sources */,
 				5A7F46DB21899BCF0089274A /* ViewController.swift in Sources */,
 				5A7F46D921899BCF0089274A /* AppDelegate.swift in Sources */,
 			);
@@ -280,15 +291,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E4WCXE99EM;
+				CODE_SIGN_ENTITLEMENTS = PushNotificationsDemo/PushNotificationsDemo.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: NIR GOLAN (7HDWALBG9X)";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = HU798XJ4XG;
 				INFOPLIST_FILE = PushNotificationsDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.distibution.PushNotificationsDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.anjolee.ANJOLEE;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "b7fa077f-5a15-4a9b-a61d-bcc033b3a8cb";
+				PROVISIONING_PROFILE_SPECIFIER = AnjoleeDevelopment;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -298,15 +314,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = E4WCXE99EM;
+				CODE_SIGN_ENTITLEMENTS = PushNotificationsDemo/PushNotificationsDemo.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Developer: NIR GOLAN (7HDWALBG9X)";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = HU798XJ4XG;
 				INFOPLIST_FILE = PushNotificationsDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.distibution.PushNotificationsDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.anjolee.ANJOLEE;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "b7fa077f-5a15-4a9b-a61d-bcc033b3a8cb";
+				PROVISIONING_PROFILE_SPECIFIER = AnjoleeDevelopment;
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

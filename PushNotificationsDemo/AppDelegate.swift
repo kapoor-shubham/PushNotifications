@@ -7,40 +7,98 @@
 //
 
 import UIKit
+import UserNotifications
+
+// Constants
+var defaults = UserDefaults.standard
+var notificationList = "NotificationList"
+//
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
+    
     var window: UIWindow?
-
-
+    var badgeCount = 0
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        registerForPushNotifications()
+        notificationPresentInCenter()   // Get Notification Data whenever App is Launched
         return true
     }
-
-    func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-    }
-
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-    }
-
+    
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        notificationPresentInCenter()
     }
-
-    func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    
+    ///  Register Push Notification
+    func registerForPushNotifications() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) {
+            (granted, error) in
+            print("Permission granted: \(granted)")
+            guard granted else { return }
+            self.getNotificationSettings()
+        }
     }
-
-    func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    
+    func getNotificationSettings() {
+        UNUserNotificationCenter.current().getNotificationSettings { (settings) in
+            guard settings.authorizationStatus == .authorized else { return }
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
     }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        UIApplication.shared.applicationIconBadgeNumber = badgeCount+1
+        let tokenParts = deviceToken.map { data -> String in
+            return String(format: "%02.2hhx", data)
+        }
+        let token = tokenParts.joined()
+        print("Device Token: \(token)")
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register: \(error)")
+    }
+    
+    /// Checks if notification is present in Notification Center.
+    func notificationPresentInCenter() {
+        
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        
+        center.getDeliveredNotifications { (delivered) in
+            
+            var previousNotificationsArray = defaults.stringArray(forKey: notificationList)
+            for i in 0..<delivered.count {
+                previousNotificationsArray?.append(delivered[i].request.content.body)
+            }
+            
+            defaults.set(previousNotificationsArray, forKey: notificationList)
+            center.removeAllDeliveredNotifications()    // Deletes Notifications From Notification Center
+        }
+    }
+}
 
-
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    // Called when App is in Forground Running State.
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        
+        var presentNotificationList = defaults.stringArray(forKey: notificationList)
+        presentNotificationList?.append(notification.request.content.body)
+        defaults.set(presentNotificationList, forKey: notificationList)
+        let center = UNUserNotificationCenter.current()
+        center.removeAllDeliveredNotifications()
+        
+        completionHandler([.alert, .badge, .sound])
+    }
+    
+    // Called when user taps on Notification.
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        print(response.notification.request.content.body)
+    }
 }
 
